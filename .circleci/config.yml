@@ -6,6 +6,7 @@ jobs:
   working_directory: /go/src/github.com/dubiZA/invoicer-chapter2
   docker:
    - image: circleci/golang:1.10
+  resource_class: medium
   environment:
    CUSTOM_PROJECT_USERNAME: "dubiZA"
    CUSTOM_PROJECT_REPONAME: "invoicer-chapter2"
