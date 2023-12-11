@@ -6,16 +6,35 @@ jobs:
   working_directory: /go/src/github.com/dubiZA/invoicer-chapter2
   docker:
    - image: circleci/golang:1.10
-  resource_class: medium
+  environment:
+   CIRCLE_PROJECT_USERNAME: "dubiZA"
+   CIRCLE_PROJECT_REPONAME: "repository-name"
   steps:
    - checkout
    - setup_remote_docker
 
    - run: 
-      name: Print environment variables
+      name: Setup environment
       command: |
-       echo "CIRCLE_PROJECT_USERNAME: $CIRCLE_PROJECT_USERNAME"
-       echo "CIRCLE_PROJECT_REPONAME: $CIRCLE_PROJECT_REPONAME"
+       gb="/src/github.com/${CIRCLE_PROJECT_USERNAME}";
+       if [ ${CIRCLE_PROJECT_USERNAME} == 'Securing-DevOps' ]; then
+         dr="securingdevops"
+       else
+         dr=$DOCKER_USER
+       fi
+       cat >> $BASH_ENV << EOF
+       export GOPATH_HEAD="$(echo ${GOPATH}|cut -d ':' -f 1)"
+       export GOPATH_BASE="$(echo ${GOPATH}|cut -d ':' -f 1)${gb}"
+       export DOCKER_REPO="$dr"
+       EOF
+   - run: mkdir -p "${GOPATH_BASE}"
+   - run: mkdir -p "${GOPATH_HEAD}/bin"
+       
+   - run:
+      name: Testing application
+      command: |
+          go test \
+          github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}
 
    - deploy:
        command: |
