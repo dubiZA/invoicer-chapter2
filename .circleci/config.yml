@@ -38,7 +38,7 @@ jobs:
 
    - deploy:
        command: |
-         if [ "${CIRCLE_BRANCH}" == "master" ]; then
+         if [ "${CIRCLE_BRANCH}" == "main" ]; then
            docker login -u ${DOCKER_USER} -p ${DOCKER_PASS};
            go install --ldflags '-extldflags "-static"' \
            github.com/${CUSTOM_PROJECT_USERNAME}/${CUSTOM_PROJECT_REPONAME};
