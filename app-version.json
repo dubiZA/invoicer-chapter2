@@ -1,7 +1,7 @@
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "docker.io/securingdevops/invoicer",
+    "Name": "docker.io/dubiza/invoicer-chapter2",
     "Update": "true"
   },
   "Ports": [
@@ -13,3 +13,22 @@
   ],
   "Logging": "/var/log/nginx"
 }
+
+{
+  "ApplicationVersion": {
+      "ApplicationVersionArn": "arn:aws:elasticbeanstalk:us-east-1:294078571321:applicationversion/invoicer/invoicer-api",
+      "ApplicationName": "invoicer",
+      "VersionLabel": "invoicer-api",
+      "SourceBundle": {
+          "S3Bucket": "dbz-invoicer-eb",
+          "S3Key": "app-version.json"
+      },
+      "DateCreated": "2023-12-11T23:05:13.742000+00:00",
+      "DateUpdated": "2023-12-11T23:05:13.742000+00:00",
+      "Status": "UNPROCESSED"
+  }
+}
+
+curl -X POST \
+--data '{"is_paid": false, "ammount": 1664, "due_date": "2023-12-11T23:05:13.742000+00:00", "charges": [{"type": "blood work", "description": "blood work", }]}' \
+invoicer-api.eba-iipjftm8.us-east-1.elasticbeanstalk.com/invoice
